@@ -10,7 +10,6 @@ import {
 } from './FormAddProduct.styled';
 import { getProducts, createProduct } from 'fetch/post';
 
-
 const FormAddProduct = () => {
   const [products, setProducts] = React.useState([]);
   const [formData, setFormData] = React.useState({
@@ -39,6 +38,14 @@ const FormAddProduct = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
+    const isFormValid = Object.values(formData).every(
+      value => value.trim() !== ''
+    );
+
+    if (!isFormValid) {
+      alert('Будь ласка, заповніть всі поля');
+      return;
+    }
     createProduct(formData).then(data => {
       setProducts(prev => [...prev, data]);
     });
@@ -131,7 +138,7 @@ const FormAddProduct = () => {
             value={formData.image}
             onChange={handleChange}
             required
-            placeholder="URL до зображення"
+            placeholder="URL до зображення. Завантажте фото на cloudinary.com. Адаптований розмір - 320x380."
           />
           <FormButton type="submit">Відправити в базу</FormButton>
         </Form>
