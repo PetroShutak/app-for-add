@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FormContainer,
   Form,
@@ -11,8 +11,8 @@ import {
 import { getProducts, createProduct } from 'fetch/post';
 
 const FormAddProduct = () => {
-  const [products, setProducts] = React.useState([]);
-  const [formData, setFormData] = React.useState({
+  const [products, setProducts] = useState([]);
+  const [formData, setFormData] = useState({
     name: '',
     brand: '',
     model: '',
@@ -22,7 +22,7 @@ const FormAddProduct = () => {
     description: '',
     raiting: '',
     country: '',
-    photo: '',
+    image: '',
   });
 
   useEffect(() => {
@@ -36,16 +36,23 @@ const FormAddProduct = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const isFieldValid = (fieldName, value) => {
+    if (value.trim() === '') {
+      alert(`Будь ласка, заповніть поле "${fieldName}"`);
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
-    const isFormValid = Object.values(formData).every(
-      value => value.trim() !== ''
-    );
 
-    if (!isFormValid) {
-      alert('Будь ласка, заповніть всі поля');
-      return;
+    for (const field in formData) {
+      if (!isFieldValid(field, formData[field])) {
+        return;
+      }
     }
+
     createProduct(formData).then(data => {
       setProducts(prev => [...prev, data]);
     });
