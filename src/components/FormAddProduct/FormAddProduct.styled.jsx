@@ -38,6 +38,7 @@ export const FormInputDescription = styled.textarea`
 export const FormButton = styled.button`
   width: 300px;
   margin: 0 auto;
+  margin-bottom: 20px;
   padding: 10px;
   border: none;
   border-radius: 4px;
