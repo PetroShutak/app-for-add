@@ -12,17 +12,21 @@ import { getProducts, createProduct } from 'fetch/post';
 
 const FormAddProduct = () => {
   const [products, setProducts] = useState([]);
-  const [formData, setFormData] = useState({
-    name: '',
-    brand: '',
-    model: '',
-    category: '',
-    subcategory: '',
-    price: '',
-    description: '',
-    raiting: '',
-    country: '',
-    image: '',
+  const [formData, setFormData] = useState(() => {
+    // Retrieve form data from localStorage
+    const storedData = localStorage.getItem('formData');
+    return storedData ? JSON.parse(storedData) : {
+      name: '',
+      brand: '',
+      model: '',
+      category: '',
+      subcategory: '',
+      price: '',
+      description: '',
+      raiting: '',
+      country: '',
+      image: '',
+    };
   });
 
   useEffect(() => {
@@ -53,11 +57,33 @@ const FormAddProduct = () => {
       }
     }
 
+    // Save form data to localStorage
+    localStorage.setItem('formData', JSON.stringify(formData));
+
     createProduct(formData).then(data => {
       setProducts(prev => [...prev, data]);
     });
     alert('Продукт додано!');
   };
+
+  const handleClear = () => {
+    // Clear form data from localStorage
+    localStorage.removeItem('formData');
+    // Clear form data state
+    setFormData({
+      name: '',
+      brand: '',
+      model: '',
+      category: '',
+      subcategory: '',
+      price: '',
+      description: '',
+      raiting: '',
+      country: '',
+      image: '',
+    });
+  };
+
 
   return (
     <div>
@@ -148,6 +174,7 @@ const FormAddProduct = () => {
             placeholder="URL до зображення. Завантажте фото на cloudinary.com. Адаптований розмір - 320x380."
           />
           <FormButton type="submit">Відправити в базу</FormButton>
+          <FormButton type="button" onClick={handleClear}>Очистити</FormButton>
         </Form>
       </FormContainer>
       <div>
