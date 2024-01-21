@@ -8,12 +8,7 @@ export const FormContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
-export const Form = styled.form`
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-`;
+
 export const FormTitle = styled.h1`
   margin-bottom: 20px;
   text-align: center;
